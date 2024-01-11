@@ -515,14 +515,14 @@ try{  // for stringIndexOutOfBoundsException
 				commonEdges.add(new PhyloTreeEdge(e1.asSplit(), commonAttrib,e1.getOriginalID() ));
 			}
 			// otherwise check if the split is compatible with all splits in t2
-			else if (e1.isCompatibleWith(t2.getSplits()) ) {
+			else if (e1.isCompatibleWith(t2.getSplits(), t1.getLeaf2NumMap().size())) {
 				EdgeAttribute commonAttrib = EdgeAttribute.difference(e1.getAttribute(), null);
 				commonEdges.add(new PhyloTreeEdge(e1.asSplit(),commonAttrib,e1.getOriginalID() ));
 			}
 		}
 		// check for splits in t2 that are compatible with all splits in t1	
 		for (PhyloTreeEdge e2 : t2.getEdges()) {
-			if (e2.isCompatibleWith(t1.getSplits()) && !(t1.getSplits().contains(e2.asSplit()))) {
+			if (e2.isCompatibleWith(t1.getSplits(), t1.getLeaf2NumMap().size()) && !(t1.getSplits().contains(e2.asSplit()))) {
 				EdgeAttribute commonAttrib = EdgeAttribute.difference(null,e2.getAttribute());
 				commonEdges.add(new PhyloTreeEdge(e2.asSplit(),commonAttrib,e2.getOriginalID() ));
 			}
@@ -547,7 +547,7 @@ try{  // for stringIndexOutOfBoundsException
 		}		
 		
 		for (PhyloTreeEdge e : edges) {
-			if (! (e.isCompatibleWith(t.getSplits()) )) { 
+			if (! (e.isCompatibleWith(t.getSplits(), this.getLeaf2NumMap().size()) )) { 
 				incompEdges.add(e.clone());
 			}
 		}
@@ -572,7 +572,7 @@ try{  // for stringIndexOutOfBoundsException
 		}
 		
 		for (PhyloTreeEdge e: t.getEdges()) {
-			if (e.isCompatibleWith(getSplits()) && !(getSplits().contains(e.asSplit()))) {
+			if (e.isCompatibleWith(getSplits(), t.getLeaf2NumMap().size()) && !(getSplits().contains(e.asSplit()))) {
 				compEdges.add(e.clone());
 			}
 		}
@@ -790,7 +790,7 @@ try{  // for stringIndexOutOfBoundsException
 			for (int j = 0; j < t.edges.size(); j++) {
 				PhyloTreeEdge e = t.edges.get(j);
 				// e should not equal 0.
-				if (e.crosses(thisTreeEdge)) {
+				if (e.crosses(thisTreeEdge, this.leaf2NumMap.size())) {
 					newSplit.addOne(j);
 				}
 			}

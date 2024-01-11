@@ -489,7 +489,7 @@ public static Geodesic getGeodesicNoCommonEdges(PhyloTree t1, PhyloTree t2 ) {
 	}
 	
 	// initialize BipartiteGraph
-	boolean[][] incidenceMatrix = Tools.getIncidenceMatrix(t1.getEdges(), t2.getEdges());
+	boolean[][] incidenceMatrix = Tools.getIncidenceMatrix(t1.getEdges(), t2.getEdges(), t1.getLeaf2NumMap().size());
 
 	
 	BipartiteGraph bg = new BipartiteGraph(incidenceMatrix, t1.getIntEdgeAttribNorms(), t2.getIntEdgeAttribNorms());

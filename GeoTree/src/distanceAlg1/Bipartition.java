@@ -136,8 +136,10 @@ public class Bipartition implements Cloneable {
 	 * @param e
 	 * @return
 	 */
-	public boolean crosses(Bipartition e) {
-		return !(disjointFrom(e) || this.contains(e) || e.contains(this));
+	public boolean crosses(Bipartition e, int numLeaves) {
+        BitSet edgeClone = (BitSet) e.partition.clone();
+		edgeClone.or(this.partition);
+		return !(disjointFrom(e) || this.contains(e) || e.contains(this) || (edgeClone.cardinality() == numLeaves));
 	}
 
 	/** Returns true if e contains ones exactly where this edges doesn't.
@@ -273,10 +275,10 @@ public class Bipartition implements Cloneable {
 	 * @param splits
 	 * @return
 	 */
-	public boolean isCompatibleWith(Vector<Bipartition> splits) {
+	public boolean isCompatibleWith(Vector<Bipartition> splits, int numLeaves) {
 		boolean compatible =true;
 		for (Bipartition s : splits) {
-			if (this.crosses(s)) {
+			if (this.crosses(s, numLeaves)) {
 				compatible = false;
 			}
 		}

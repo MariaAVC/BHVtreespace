@@ -57,13 +57,13 @@ public class Tools {
 	}
 	
 	
-	public static boolean[][] getIncidenceMatrix(Vector<PhyloTreeEdge> edges1, Vector<PhyloTreeEdge> edges2) {
+	public static boolean[][] getIncidenceMatrix(Vector<PhyloTreeEdge> edges1, Vector<PhyloTreeEdge> edges2, int numLeaves) {
 		boolean[][] incidenceMatrix = new boolean[edges1.size()][edges2.size()];
 		
 		for (int i = 0; i < edges1.size(); i++) {
 			
 			for (int j = 0; j < edges2.size(); j++) {
-				if (edges1.get(i).crosses(edges2.get(j))) {
+				if (edges1.get(i).crosses(edges2.get(j), numLeaves)) {
 					incidenceMatrix[i][j] = true;
 				}
 				else {
