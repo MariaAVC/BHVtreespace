@@ -509,11 +509,16 @@ try{  // for stringIndexOutOfBoundsException
 		}
 		
 		for (PhyloTreeEdge e1 : t1.edges) {
-			if (t2.getSplits().contains(e1.asSplit() ) ){
+            Bipartition e1Clone = e1.asSplit();
+            e1Clone.complement(t1.getLeaf2NumMap().size());
+			if (t2.getSplits().contains(e1.asSplit())){
 				// then we have found the same split in each tree
 				EdgeAttribute commonAttrib = EdgeAttribute.difference(e1.getAttribute(), t2.getAttribOfSplit(e1.asSplit()));
 				commonEdges.add(new PhyloTreeEdge(e1.asSplit(), commonAttrib,e1.getOriginalID() ));
-			}
+			} else if(t2.getSplits().contains(e1Clone)){
+                EdgeAttribute commonAttrib = EdgeAttribute.difference(e1.getAttribute(), t2.getAttribOfSplit(e1Clone));
+				commonEdges.add(new PhyloTreeEdge(e1.asSplit(), commonAttrib,e1.getOriginalID() ));
+            }
 			// otherwise check if the split is compatible with all splits in t2
 			else if (e1.isCompatibleWith(t2.getSplits(), t1.getLeaf2NumMap().size())) {
 				EdgeAttribute commonAttrib = EdgeAttribute.difference(e1.getAttribute(), null);
@@ -522,7 +527,9 @@ try{  // for stringIndexOutOfBoundsException
 		}
 		// check for splits in t2 that are compatible with all splits in t1	
 		for (PhyloTreeEdge e2 : t2.getEdges()) {
-			if (e2.isCompatibleWith(t1.getSplits(), t1.getLeaf2NumMap().size()) && !(t1.getSplits().contains(e2.asSplit()))) {
+            Bipartition e2Clone = e2.asSplit();
+            e2Clone.complement(t2.getLeaf2NumMap().size());
+			if (e2.isCompatibleWith(t1.getSplits(), t1.getLeaf2NumMap().size()) && !(t1.getSplits().contains(e2.asSplit())) && !(t1.getSplits().contains(e2Clone))) {
 				EdgeAttribute commonAttrib = EdgeAttribute.difference(null,e2.getAttribute());
 				commonEdges.add(new PhyloTreeEdge(e2.asSplit(),commonAttrib,e2.getOriginalID() ));
 			}
